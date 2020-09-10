@@ -13,13 +13,19 @@ car.shapeColor='white'
 function draw() {
   background(0)
   car.velocityX = speed
-  
+  textSize(30)
+  fill('white')
+  text('speed:'+speed+'km/h',100,100)
+  text('weight:'+weight+'kg',100,150)
   deformation=(0.5*weight*speed*speed)/22500
   drawSprites()
   if (wall.x - car.x < (wall.width + car.width) / 2) {
     car.velocityX = 0
+    textSize(45)
     if(deformation>180){
       car.shapeColor=rgb(255,0,0)
+      fill('red')
+      text('unsafe',650,100)
     }
     if(deformation<180&&deformation>100){
       car.shapeColor=rgb(230,230,0)

@@ -1,37 +1,74 @@
-var car, wall, speed, deformation, weight;
+var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
+var packageBody,ground
+const Engine = Matter.Engine;
+const World = Matter.World;
+const Bodies = Matter.Bodies;
+const Body = Matter.Body;
+
+function preload()
+{
+	helicopterIMG=loadImage("helicopter.png")
+	packageIMG=loadImage("package.png")
+}
 
 function setup() {
-  createCanvas(1600, 400);
-  wall = createSprite(1500, 200, 60, 200)
-  car = createSprite(100, 200, 40, 40)
+	createCanvas(800,500);
+	rectMode(CENTER);
+	
 
-  speed = Math.round(random(55, 90))
-  weight = Math.round(random(400, 1500))
-car.shapeColor='white'
+	packageSprite=createSprite(width/2, 80, 10,10);
+	packageSprite.addImage(packageIMG)
+	packageSprite.scale=0.2
+
+	helicopterSprite=createSprite(width/2, 100, 10,10);
+	helicopterSprite.addImage(helicopterIMG)
+	helicopterSprite.scale=0.6
+
+	groundSprite=createSprite(width/2, height-35, width,50);
+	groundSprite.shapeColor=color('green')
+
+
+	engine = Engine.create();
+	world = engine.world;
+
+	packageBody = Bodies.rectangle(width/2 , helicopterSprite.y , 50 , 50);
+	World.add(world, packageBody);
+	w1= Bodies.rectangle(width/2,450,200,20 , {isStatic:true} );
+	 World.add(world,w1);
+	 w2 = Bodies.rectangle(300,365,20,100 , {isStatic:true} );
+	 World.add(world,w2);
+	 w3 = Bodies.rectangle(510,365,20,100 , {isStatic:true} );
+	 World.add(world,w3);
+	w1s=createSprite(width/2,450,200,20);
+	w1s.shapeColor=color('red')
+	w2s=createSprite(310,400,20,100);
+	w2s.shapeColor=color('red')
+	w3s=createSprite(490,400,20,100);
+	w3s.shapeColor=color('red')
+
+	//Create a Ground
+	ground = Bodies.rectangle(width/2, 475, width,60 , {isStatic:true} );
+ 	World.add(world, ground);
+
+
+	Engine.run(engine);
+	
 }
+
 
 function draw() {
-  background(0)
-  car.velocityX = speed
-  textSize(30)
-  fill('white')
-  text('speed:'+speed+'km/h',100,100)
-  text('weight:'+weight+'kg',100,150)
-  deformation=(0.5*weight*speed*speed)/22500
-  drawSprites()
-  if (wall.x - car.x < (wall.width + car.width) / 2) {
-    car.velocityX = 0
-    textSize(45)
-    if(deformation>180){
-      car.shapeColor=rgb(255,0,0)
-      fill('red')
-      text('unsafe',650,100)
-    }
-    if(deformation<180&&deformation>100){
-      car.shapeColor=rgb(230,230,0)
-    }
-    if(deformation<100){
-      car.shapeColor=rgb(0,255,0)
-    }
-  }
+	Engine.update(engine)
+	
+  rectMode(CENTER);
+  background(rgb(105,206,235));
+  
+  packageSprite.x= packageBody.position.x 
+  packageSprite.y= packageBody.position.y 
+  drawSprites();
+ 
 }
+
+
+
+
+
